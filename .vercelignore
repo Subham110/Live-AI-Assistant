@@ -1,0 +1,8 @@
+backend/env/
+backend/__pycache__/
+backend/.env
+**/__pycache__/
+*.pyc
+.git/
+docker-compose.yml
+nginx.conf

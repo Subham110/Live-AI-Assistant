@@ -46,7 +46,18 @@ docker-compose up --build
 
 Open http://localhost:3000
 
-### 3b. Manual
+### 3b. Vercel
+
+Deploy the repo to Vercel and add these Environment Variables in Project Settings:
+
+```bash
+GEMINI_API_KEY=your_google_ai_studio_key
+TAVILY_API_KEY=your_tavily_key
+```
+
+The frontend is served from `frontend/`, and `/ask`, `/health`, and `/session/*` are routed to the FastAPI app through `api/index.py`.
+
+### 3c. Manual
 
 ```bash
 # Backend

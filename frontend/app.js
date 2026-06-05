@@ -1,5 +1,7 @@
 // ── Config ────────────────────────────────────────────────────────────────────
-const API_BASE = "http://localhost:8000";
+const API_BASE = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  ? "http://localhost:8000"
+  : "";
 const SESSION_ID = "session_" + Math.random().toString(36).slice(2, 9);
 
 // ── State ─────────────────────────────────────────────────────────────────────
