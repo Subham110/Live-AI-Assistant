@@ -2,28 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/ask",
+      "source": "/api/:path*",
       "destination": "/api/index.py"
-    },
-    {
-      "source": "/health",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/session/:path*",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/",
-      "destination": "/frontend/index.html"
-    },
-    {
-      "source": "/app.js",
-      "destination": "/frontend/app.js"
-    },
-    {
-      "source": "/style.css",
-      "destination": "/frontend/style.css"
     }
   ]
 }

@@ -257,6 +257,7 @@ class QueryRequest(BaseModel):
     query: str
 
 
+@app.post("/api/ask")
 @app.post("/ask")
 async def ask(body: QueryRequest):
     if not GEMINI_API_KEY:
@@ -274,12 +275,14 @@ async def ask(body: QueryRequest):
     )
 
 
+@app.delete("/api/session/{session_id}")
 @app.delete("/session/{session_id}")
 async def clear_session(session_id: str):
     session_memory.pop(session_id, None)
     return {"cleared": True}
 
 
+@app.get("/api/health")
 @app.get("/health")
 async def health():
     return {
@@ -289,6 +292,7 @@ async def health():
     }
 
 
+@app.get("/api")
 @app.get("/")
 async def root():
     return {"message": "Live AI Assistant API (Gemini) — POST /ask to query"}

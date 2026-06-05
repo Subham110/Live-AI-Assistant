@@ -6,7 +6,7 @@ A production-ready AI assistant with real-time internet access, fact verificatio
 
 | Layer | Technology |
 |---|---|
-| AI Agent | Gemini 2.0 Flash (Google) |
+| AI Agent | Gemini 2.5 Flash (Google) |
 | Web Search | Tavily API |
 | Backend | FastAPI + SSE streaming |
 | Memory | In-process session store (swap for Redis in prod) |
@@ -17,7 +17,7 @@ A production-ready AI assistant with real-time internet access, fact verificatio
 
 - **Real-time web search** — Agent autonomously decides when to call `web_search`
 - **Dual-pass verification** — Runs a second search to cross-check facts before responding
-- **Tool calling** — LLM decides which tools to use via Anthropic's tool-use API
+- **Tool calling** — Gemini decides when to use web search and verification
 - **Session memory** — 10-turn sliding window persisted per session
 - **SSE streaming** — Tokens stream live to the UI, no waiting
 - **Live capability panel** — UI shows search/verify/memory status in real time
@@ -55,7 +55,9 @@ GEMINI_API_KEY=your_google_ai_studio_key
 TAVILY_API_KEY=your_tavily_key
 ```
 
-The frontend is served from `frontend/`, and `/ask`, `/health`, and `/session/*` are routed to the FastAPI app through `api/index.py`.
+The deploy uses Vercel's static `public/` directory for the frontend and routes `/api/*` to the FastAPI app through `api/index.py`.
+
+You do not need `npx plugins add vercel/vercel-plugin` for this project.
 
 ### 3c. Manual
 
@@ -75,6 +77,8 @@ npx serve .  # or open index.html directly
 ### POST /ask
 Stream a response from the agent.
 
+On Vercel, use `/api/ask`. The local backend also keeps `/ask` for manual development.
+
 ```json
 {
   "session_id": "session_abc123",
@@ -91,8 +95,12 @@ Returns SSE stream with events:
 ### DELETE /session/{session_id}
 Clear session memory.
 
+On Vercel, use `/api/session/{session_id}`.
+
 ### GET /health
 Returns API key status and server health.
+
+On Vercel, use `/api/health`.
 
 ## Production Upgrades
 
@@ -108,6 +116,8 @@ Returns API key status and server health.
 
 ```
 live-ai-assistant/
+├── api/
+│   └── index.py        # Vercel FastAPI entrypoint
 ├── backend/
 │   ├── main.py          # FastAPI app, agent loop, tool execution
 │   ├── requirements.txt
@@ -117,6 +127,11 @@ live-ai-assistant/
 │   ├── index.html       # Chat UI shell
 │   ├── style.css        # Dark editorial theme
 │   └── app.js           # SSE client, message rendering, state
+├── public/
+│   ├── index.html       # Vercel static frontend
+│   ├── style.css
+│   └── app.js
+├── vercel.json
 ├── docker-compose.yml
 ├── nginx.conf
 └── README.md
